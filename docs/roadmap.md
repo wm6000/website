@@ -141,7 +141,7 @@ Establish a professional software development workflow.
 ## Remaining
 
 * [ ] Define architecture documentation
-* [ ] Create Mermaid architecture diagrams
+* [x] Create Mermaid architecture diagrams
 * [x] Establish coding standards
 * [ ] Create README templates
 * [x] Define branching strategy
