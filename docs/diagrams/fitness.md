@@ -4,14 +4,14 @@
 
 ```mermaid
 flowchart LR
-    Strava["Strava API"] --> ApiGateway["api-gateway<br/>(fitness-platform domain logic)"]
-    WeatherAPI["Weather API"] --> ApiGateway
+    Strava["Strava API"] --> PlatformHub["platform-hub<br/>(fitness-platform domain logic)"]
+    WeatherAPI["Weather API"] --> PlatformHub
 
-    ApiGateway -- writes --> FitnessSchema[("data-platform<br/>fitness schema")]
+    PlatformHub -- writes --> FitnessSchema[("data-platform<br/>fitness schema")]
     FitnessSchema --> Dbt["dbt models"]
     Dbt --> Analytics[("analytics schema")]
 
     Analytics --> Recs["Daily workout<br/>recommendations"]
-    Recs --> ApiGateway
-    ApiGateway --> Website["website"]
+    Recs --> PlatformHub
+    PlatformHub --> Website["website"]
 ```

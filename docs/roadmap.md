@@ -33,6 +33,26 @@ Technology:
 
 ---
 
+## platform-hub
+
+Shared API gateway and application-logic tier. The only backend `website` (and any future client) talks to.
+
+Responsibilities:
+
+* API gateway (single entry point for every client)
+* Orchestrates fitness + ski-advisor domain logic
+* AI infrastructure (prompt management, rate limiting, quotas, usage logging)
+* Reads/writes `data-platform`
+
+Technology:
+
+* Python
+* FastAPI
+* Imports `fitness-platform` + `ski-advisor-platform`
+* Data platform integration
+
+---
+
 ## data-platform
 
 Shared data engineering foundation supporting multiple applications.
@@ -60,7 +80,7 @@ Technology:
 
 ## fitness-platform
 
-AI-powered personal fitness assistant.
+AI-powered personal fitness domain logic. A library imported by `platform-hub` — not independently deployed or exposed.
 
 Responsibilities:
 
@@ -73,15 +93,14 @@ Responsibilities:
 Technology:
 
 * Python
-* FastAPI
 * AI APIs
-* Data platform integration
+* Data platform integration (via `platform-hub`)
 
 ---
 
 ## ski-advisor-platform
 
-AI-powered ski recommendation engine focused initially on the Pacific Northwest.
+AI-powered ski recommendation domain logic, focused initially on the Pacific Northwest. A library imported by `platform-hub` — not independently deployed or exposed.
 
 Responsibilities:
 
@@ -95,7 +114,6 @@ Responsibilities:
 Technology:
 
 * Python
-* FastAPI
 * Data pipelines
 * AI APIs
 
@@ -140,10 +158,10 @@ Establish a professional software development workflow.
 
 ## Remaining
 
-* [ ] Define architecture documentation
+* [x] Define architecture documentation
 * [x] Create Mermaid architecture diagrams
 * [x] Establish coding standards
-* [ ] Create README templates
+* [x] Create README templates
 * [x] Define branching strategy
 
 ---
@@ -417,11 +435,11 @@ Create consistent communication between applications.
 Architecture:
 
 ```
-website
+website / app
 
 ↓
 
-FastAPI services
+platform-hub (API gateway + application logic)
 
 ↓
 
@@ -626,33 +644,28 @@ Add:
 ```
                          User
 
-                           |
+              ┌───────────┼───────────┐
 
-                       website
+          website    app (planned)   Projects
+                                    (standalone showcase,
+                                     no backend calls)
 
-                           |
+           └───────────┘
 
-        ┌──────────────────┼──────────────────┐
+                    |
 
-        |                  |                  |
+               platform-hub
+   (API gateway + fitness/ski domain logic + AI infrastructure)
 
- fitness-platform   ski-advisor-platform   Projects
+                    |
 
-        |                  |
+                data-platform
 
-        └──────────────────┘
+                    |
 
-                  |
-
-             data-platform
-
-                  |
-
-      PostgreSQL • dbt • Databricks
-
-                  |
-
-       APIs • Pipelines • AI Services
+              dbt • PostgreSQL
+                    ↑
+         Ingestion Pipeline (scheduled ETL)
 ```
 
 ## Long-Term Goal

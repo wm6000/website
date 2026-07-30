@@ -44,18 +44,18 @@ The system follows a four-tier architecture: presentation (clients), API gateway
 
 | Repository | Role | Depends on |
 |---|---|---|
-| `website` | Portfolio, project showcase, navigation, auth, integration point | `api-gateway` (the only backend it calls) |
-| `api-gateway` | Tiers 2+3: API gateway + application logic. Routes every client request, hosts AI infrastructure (prompt management, rate limiting, quotas, usage logging), orchestrates the fitness/ski domain logic | `data-platform`, `fitness-platform`, `ski-advisor-platform` |
+| `website` | Portfolio, project showcase, navigation, auth, integration point | `platform-hub` (the only backend it calls) |
+| `platform-hub` | Tiers 2+3: API gateway + application logic. Routes every client request, hosts AI infrastructure (prompt management, rate limiting, quotas, usage logging), orchestrates the fitness/ski domain logic | `data-platform`, `fitness-platform`, `ski-advisor-platform` |
 | `data-platform` | Shared PostgreSQL database, schemas, ingestion, dbt models, analytics layer, AI usage tracking | — |
-| `fitness-platform` | Fitness domain logic library: Strava ingestion, training analysis, workout recommendations. Imported by `api-gateway`; not independently deployed or exposed | `data-platform` (via `api-gateway`) |
-| `ski-advisor-platform` | Ski/snow-conditions domain logic library (Pacific Northwest recommendation engine). Imported by `api-gateway`; not independently deployed or exposed | `data-platform` (via `api-gateway`) |
+| `fitness-platform` | Fitness domain logic library: Strava ingestion, training analysis, workout recommendations. Imported by `platform-hub`; not independently deployed or exposed | `data-platform` (via `platform-hub`) |
+| `ski-advisor-platform` | Ski/snow-conditions domain logic library (Pacific Northwest recommendation engine). Imported by `platform-hub`; not independently deployed or exposed | `data-platform` (via `platform-hub`) |
 | `disaster-response-pipeline` | Standalone NLP/ML portfolio project (message classification, Flask) | — |
 | `whale-blog` | Standalone content/research blog | — |
 
 ## Technology Stack
 
 - **website** — Next.js, React, TypeScript, Tailwind CSS, shadcn/ui
-- **api-gateway** — Python, FastAPI, imports `fitness-platform` + `ski-advisor-platform`, `data-platform` integration
+- **platform-hub** — Python, FastAPI, imports `fitness-platform` + `ski-advisor-platform`, `data-platform` integration
 - **data-platform** — Python, PostgreSQL, dbt, Docker, Google Cloud
 - **fitness-platform** — Python, AI APIs (domain logic library, no HTTP layer of its own)
 - **ski-advisor-platform** — Python, data pipelines, AI APIs (domain logic library, no HTTP layer of its own)
