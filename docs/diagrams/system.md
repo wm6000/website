@@ -3,21 +3,24 @@
 > Status: planned/target architecture. See [`architecture.md`](../architecture.md).
 
 ```mermaid
+---
+id: 9860b5e8-37de-4822-b15d-1789ced92d98
+---
 flowchart TD
     User(["User"])
     User --> Website["website<br/>(Next.js)"]
+    User --> App["app client<br/>(planned)"]
 
-    Website --> Fitness["fitness-platform"]
-    Website --> Ski["ski-advisor-platform"]
+    Website --> AccessLayer["access-layer API<br/>(fitness + ski-advisor domains)"]
+    App --> AccessLayer
     Website --> Projects["Standalone projects<br/>disaster-response-pipeline, whale-blog"]
 
-    Fitness --> DataPlatform["data-platform"]
-    Ski --> DataPlatform
+    AccessLayer --> DataPlatform["data-platform"]
 
     DataPlatform --> Postgres[("PostgreSQL")]
     DataPlatform --> Dbt["dbt models"]
     DataPlatform --> Databricks["Databricks (future)"]
 
-    Postgres --> Services["APIs, pipelines, AI services"]
+    Postgres --> Services["pipelines, AI services"]
     Dbt --> Services
 ```

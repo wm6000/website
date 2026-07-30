@@ -4,47 +4,42 @@
 
 ## Overall System Architecture
 
-`website` is the single user-facing entry point for a small ecosystem of independent applications that share one data platform. Users only ever interact with `website`; it links out to (or embeds) the other applications, and every application that needs persistent data or AI usage tracking talks to the shared `data-platform` rather than keeping its own database.
+`website` is the primary user-facing entry point for a small ecosystem of independent applications that share one data platform, alongside a planned future client (e.g. a mobile app). Every client talks to a single shared access-layer API rather than to `data-platform` directly, and rather than each platform app running its own API — the access layer is the one place that reads and writes `data-platform`.
 
 ```
-                         User
+                    User
 
-                           |
+              ┌───────┴───────┐
 
-                       website
+           website      app (planned)
 
-                           |
+              └───────┬───────┘
 
-        ┌──────────────────┼──────────────────┐
+                       |
 
-        |                  |                  |
+              access-layer API
+          (fitness + ski-advisor domains)
 
- fitness-platform   ski-advisor-platform   Projects
+                       |
 
-        |                  |
+                data-platform
 
-        └──────────────────┘
+                       |
 
-                  |
+       PostgreSQL • dbt • Databricks
 
-             data-platform
+                       |
 
-                  |
-
-      PostgreSQL • dbt • Databricks
-
-                  |
-
-       APIs • Pipelines • AI Services
+          Pipelines • AI Services
 ```
 
-`disaster-response-pipeline` and `whale-blog` are standalone portfolio projects — they are showcased from `website` but do not integrate with `data-platform`.
+`disaster-response-pipeline` and `whale-blog` are standalone portfolio projects — they are showcased from `website` but do not integrate with `data-platform` or the access layer.
 
 ## Repository Structure
 
 | Repository | Role | Depends on |
 |---|---|---|
-| `website` | Portfolio, project showcase, navigation, auth, integration point | `data-platform` (indirectly, via each platform app's API) |
+| `website` | Portfolio, project showcase, navigation, auth, integration point | `data-platform` (indirectly, via the access-layer API) |
 | `data-platform` | Shared PostgreSQL database, schemas, ingestion, dbt models, analytics layer, AI usage tracking | — |
 | `fitness-platform` | AI fitness assistant: Strava ingestion, training analysis, workout recommendations | `data-platform` |
 | `ski-advisor-platform` | AI ski/snow-conditions recommendation engine (Pacific Northwest) | `data-platform` |
@@ -83,10 +78,10 @@ Prompt management, AI request logging, token tracking, cost monitoring, rate lim
 ### Request path (Phase 6)
 
 ```
-website → FastAPI services (fitness-platform / ski-advisor-platform) → data-platform → PostgreSQL
+website / app → access-layer API (fitness + ski-advisor domains) → data-platform → PostgreSQL
 ```
 
-`website` never talks to PostgreSQL directly — it calls each platform app's FastAPI service, which reads/writes through `data-platform`.
+No client talks to `data-platform` or PostgreSQL directly — every client goes through the shared access-layer API, which reads/writes through `data-platform`. This is what lets multiple front-ends (the `website`, and any future client such as a mobile app) reuse the same data access and business logic instead of each platform app duplicating it.
 
 ### Ingestion / analytics path (Phase 9)
 
