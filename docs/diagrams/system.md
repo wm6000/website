@@ -6,21 +6,23 @@
 ---
 id: 9860b5e8-37de-4822-b15d-1789ced92d98
 ---
-flowchart TD
-    User(["User"])
-    User --> Website["website<br/>(Next.js)"]
-    User --> App["app client<br/>(planned)"]
-
-    Website --> AccessLayer["access-layer API<br/>(fitness + ski-advisor domains)"]
-    App --> AccessLayer
-    Website --> Projects["Standalone projects<br/>disaster-response-pipeline, whale-blog"]
-
-    AccessLayer --> DataPlatform["data-platform"]
-
-    DataPlatform --> Postgres[("PostgreSQL")]
-    DataPlatform --> Dbt["dbt models"]
-    DataPlatform --> Databricks["Databricks (future)"]
-
-    Postgres --> Services["pipelines, AI services"]
-    Dbt --> Services
+flowchart TB
+ subgraph s1["Presentation Tier"]
+        n1["Website"]
+        App["App"]
+  end
+ subgraph s2["API Gateway Tier"]
+        n2["API Service"]
+  end
+ subgraph s3["Application Tier"]
+        n3["Logic"]
+  end
+ subgraph s4["Data Tier"]
+        n4["dbt"]
+        Postgres[("PostgreSQL")]
+  end
+    s1 --> s2
+    s2 --> s3
+    s3 --> s4
+    n5["external data scheduled etl"] --> Postgres
 ```

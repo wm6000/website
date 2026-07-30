@@ -4,33 +4,38 @@
 
 ## Overall System Architecture
 
-`website` is the primary user-facing entry point for a small ecosystem of independent applications that share one data platform, alongside a planned future client (e.g. a mobile app). Every client talks to a single shared access-layer API rather than to `data-platform` directly, and rather than each platform app running its own API — the access layer is the one place that reads and writes `data-platform`.
+The system follows a four-tier architecture: presentation (clients), API gateway (single entry point for every client), application (business logic), and data (`data-platform`). Each tier only talks to the tier directly below it — no client talks to the application or data tiers directly, and the API gateway is the only way in.
 
 ```
-                    User
+                         User
 
-              ┌───────┴───────┐
+              ┌───────────┼───────────┐
 
-           website      app (planned)
+          website    app (planned)   Projects
+                                    (standalone showcase,
+                                     no backend calls)
 
-              └───────┬───────┘
+           └───────────┘
+      Tier 1 — Presentation
 
-                       |
+                    |
 
-              access-layer API
-          (fitness + ski-advisor domains)
+                API Service
+      Tier 2 — API Gateway
 
-                       |
+                    |
 
-                data-platform
+            Logic ──uses──> AI Infrastructure
+      (fitness + ski-advisor domains)   (prompt mgmt, rate limits,
+                                          quotas, usage logging)
+      Tier 3 — Application
 
-                       |
+                    |
 
-       PostgreSQL • dbt • Databricks
-
-                       |
-
-          Pipelines • AI Services
+              dbt • PostgreSQL
+      Tier 4 — Data
+                    ↑
+       external data (scheduled ETL)
 ```
 
 `disaster-response-pipeline` and `whale-blog` are standalone portfolio projects — they are showcased from `website` but do not integrate with `data-platform` or the access layer.
@@ -39,19 +44,21 @@
 
 | Repository | Role | Depends on |
 |---|---|---|
-| `website` | Portfolio, project showcase, navigation, auth, integration point | `data-platform` (indirectly, via the access-layer API) |
+| `website` | Portfolio, project showcase, navigation, auth, integration point | `api-gateway` (the only backend it calls) |
+| `api-gateway` | Tiers 2+3: API gateway + application logic. Routes every client request, hosts AI infrastructure (prompt management, rate limiting, quotas, usage logging), orchestrates the fitness/ski domain logic | `data-platform`, `fitness-platform`, `ski-advisor-platform` |
 | `data-platform` | Shared PostgreSQL database, schemas, ingestion, dbt models, analytics layer, AI usage tracking | — |
-| `fitness-platform` | AI fitness assistant: Strava ingestion, training analysis, workout recommendations | `data-platform` |
-| `ski-advisor-platform` | AI ski/snow-conditions recommendation engine (Pacific Northwest) | `data-platform` |
+| `fitness-platform` | Fitness domain logic library: Strava ingestion, training analysis, workout recommendations. Imported by `api-gateway`; not independently deployed or exposed | `data-platform` (via `api-gateway`) |
+| `ski-advisor-platform` | Ski/snow-conditions domain logic library (Pacific Northwest recommendation engine). Imported by `api-gateway`; not independently deployed or exposed | `data-platform` (via `api-gateway`) |
 | `disaster-response-pipeline` | Standalone NLP/ML portfolio project (message classification, Flask) | — |
 | `whale-blog` | Standalone content/research blog | — |
 
 ## Technology Stack
 
 - **website** — Next.js, React, TypeScript, Tailwind CSS, shadcn/ui
+- **api-gateway** — Python, FastAPI, imports `fitness-platform` + `ski-advisor-platform`, `data-platform` integration
 - **data-platform** — Python, PostgreSQL, dbt, Docker, Google Cloud
-- **fitness-platform** — Python, FastAPI, AI APIs, `data-platform` integration
-- **ski-advisor-platform** — Python, FastAPI, data pipelines, AI APIs
+- **fitness-platform** — Python, AI APIs (domain logic library, no HTTP layer of its own)
+- **ski-advisor-platform** — Python, data pipelines, AI APIs (domain logic library, no HTTP layer of its own)
 - **disaster-response-pipeline** — Python, Flask, NLP/ML
 - **Cloud/infra (platform-wide, Phase 7+)** — Google Cloud Run, Cloud SQL, Cloud Scheduler, Secret Manager, Cloud Storage, Docker/Docker Compose
 - **CI/CD (platform-wide, Phase 8+)** — GitHub Actions (lint → test → build → deploy)
@@ -71,26 +78,27 @@ Weekly training summaries, personalized workout adjustments, training recommenda
 
 ### Planned AI infrastructure (Phase 10)
 
-Prompt management, AI request logging, token tracking, cost monitoring, rate limiting, and per-user quotas, shared across `fitness-platform` and `ski-advisor-platform`.
+Prompt management, AI request logging, token tracking, cost monitoring, rate limiting, and per-user quotas — called out as its own "AI Infrastructure" node in Tier 3 (Application), used by the fitness and ski-advisor domain logic rather than duplicated by each.
 
 ## Data Flow
 
 ### Request path (Phase 6)
 
 ```
-website / app → access-layer API (fitness + ski-advisor domains) → data-platform → PostgreSQL
+Tier 1 (website / app) → Tier 2 (API gateway) → Tier 3 (application logic: fitness + ski-advisor domains) → Tier 4 (data-platform: dbt / PostgreSQL)
 ```
 
-No client talks to `data-platform` or PostgreSQL directly — every client goes through the shared access-layer API, which reads/writes through `data-platform`. This is what lets multiple front-ends (the `website`, and any future client such as a mobile app) reuse the same data access and business logic instead of each platform app duplicating it.
+No client talks to the application or data tiers directly — every client goes through the API gateway, which routes to the shared application logic, which reads/writes through `data-platform`. This is what lets multiple front-ends (the `website`, and any future client such as a mobile app) reuse the same gateway, business logic, and data access instead of each platform app duplicating it.
 
 ### Ingestion / analytics path (Phase 9)
 
 ```
 External APIs (Strava, weather, NOAA, NWAC, resort reports, ...)
-        → Raw data landing in PostgreSQL
+        → scheduled ETL
+        → Raw data landing in PostgreSQL (Tier 4 — Data)
         → dbt models (transformations)
         → Analytics layer
         → Applications + AI features
 ```
 
-Raw ingested data is never queried directly by applications — dbt transforms it into modeled analytics tables that both the applications and the AI recommendation logic read from.
+Scheduled ETL writes straight into the data tier, bypassing the API gateway and application tiers entirely. Raw ingested data is never queried directly by applications — dbt transforms it into modeled analytics tables that both the applications and the AI recommendation logic read from.
