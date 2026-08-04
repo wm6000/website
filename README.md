@@ -2,7 +2,7 @@
 
 The central portfolio application and user-facing entry point for the willmuehlhausen.com ecosystem — the only client end users interact with directly.
 
-Status: planned — Phase 0 (engineering foundation) wrapping up, Phase 2 (Next.js application setup) not yet started. See [`docs/roadmap.md`](docs/roadmap.md).
+Status: in progress — Phase 2 (Website Foundation) underway. See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Overview
 
@@ -18,7 +18,18 @@ Status: planned — Phase 0 (engineering foundation) wrapping up, Phase 2 (Next.
 
 ## Getting started
 
-Not yet scaffolded — see [`docs/roadmap.md`](docs/roadmap.md#phase-2--website-foundation) (Phase 2) for the planned setup steps. This section will be filled in once the Next.js application exists.
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+Other scripts:
+
+* `npm run build` — production build
+* `npm run start` — run the production build
+* `npm run lint` — ESLint
 
 ## Documentation
 
