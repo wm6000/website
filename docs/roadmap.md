@@ -219,7 +219,7 @@ Create the portfolio application that connects all projects.
 
 Initial:
 
-* [ ] Next.js application setup
+* [x] Next.js application setup
 * [ ] TypeScript configuration
 * [ ] Tailwind CSS setup
 * [ ] shadcn/ui setup
