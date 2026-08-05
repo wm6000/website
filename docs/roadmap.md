@@ -215,6 +215,10 @@ Repository:
 
 Create the portfolio application that connects all projects.
 
+## Navigation
+
+Top-level nav, left to right: Home, Fitness Platform, Ski Advisor, Projects. Fitness Platform and Ski Advisor are dedicated top-level pages rather than `/projects` subpages — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
+
 ## Features
 
 Initial:
@@ -223,18 +227,17 @@ Initial:
 * [x] TypeScript configuration
 * [x] Tailwind CSS setup
 * [x] shadcn/ui setup
-* [ ] Homepage
+* [ ] Homepage — placeholder implemented (#17 open for full content)
 * [ ] About page
-* [ ] Projects page
+* [ ] Projects page — implemented, lists Disaster Response Pipeline and Whale Blog (#19 open for full content)
 * [ ] Contact page
+* [ ] Fitness Platform (top-level page) — placeholder implemented (#21 open for full showcase content)
+* [ ] Ski Advisor (top-level page) — placeholder implemented (#22 open for full showcase content)
 
 ## Project Showcase Pages
 
 Create pages for:
 
-* Fitness Platform
-* Ski Advisor Platform
-* Data Platform
 * Disaster Response Pipeline
 * Whale Blog
 
@@ -246,6 +249,10 @@ Each project page should include:
 * Screenshots
 * GitHub link
 * Lessons learned
+
+Fitness Platform and Ski Advisor use the same content structure, but live at their own top-level routes (`/fitness-platform`, `/ski-advisor`) instead of under `/projects` — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
+
+Data Platform is shared infrastructure (Tier 4 — see `docs/architecture.md`), not a standalone portfolio project, so it does not get a showcase page here — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
 
 ---
 
