@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteNav } from "@/components/site-nav";
+import { auth } from "@/lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,9 @@ export const metadata: Metadata = {
   description: "Portfolio, fitness platform, and ski advisor.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const session = await auth();
+
   return (
     <html
       lang="en"
@@ -28,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SiteNav />
+          <SiteNav session={session} />
           {children}
         </ThemeProvider>
       </body>
