@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import type { Session } from "next-auth";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { AuthButton } from "@/components/auth-button";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -15,7 +17,7 @@ const navItems = [
   { href: "/projects", label: "Projects" },
 ] as const;
 
-export function SiteNav() {
+export function SiteNav({ session }: { session: Session | null }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuOpenForPathname, setMenuOpenForPathname] = useState(pathname);
@@ -49,6 +51,10 @@ export function SiteNav() {
           ))}
         </div>
 
+        <div className="ml-auto hidden sm:block">
+          <AuthButton session={session} />
+        </div>
+
         <Button
           variant="ghost"
           size="icon-lg"
@@ -79,6 +85,9 @@ export function SiteNav() {
                 {item.label}
               </Link>
             ))}
+            <div className="mt-1 border-t border-border pt-2">
+              <AuthButton session={session} />
+            </div>
           </div>
         </div>
       )}
