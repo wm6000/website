@@ -233,7 +233,7 @@ Initial:
 * [ ] Contact page
 * [ ] Fitness Platform (top-level page) — placeholder implemented (#21 open for full showcase content)
 * [ ] Ski Advisor (top-level page) — placeholder implemented (#22 open for full showcase content)
-* [ ] User authentication — Google OAuth (#39); email login deferred to a follow-up issue pending data-platform's `core.users` (Phase 3)
+* [ ] User authentication — Google OAuth (#39); email login (#42) deferred pending data-platform's `core.users` (Phase 3)
 
 ## Project Showcase Pages
 
