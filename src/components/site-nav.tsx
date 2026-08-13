@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Session } from "next-auth";
 
 import { cn } from "@/lib/utils";
+import { AuthButton } from "@/components/auth-button";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -12,7 +14,7 @@ const navItems = [
   { href: "/projects", label: "Projects" },
 ] as const;
 
-export function SiteNav() {
+export function SiteNav({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   return (
@@ -38,6 +40,9 @@ export function SiteNav() {
             </Link>
           );
         })}
+        <div className="ml-auto">
+          <AuthButton session={session} />
+        </div>
       </nav>
     </header>
   );
