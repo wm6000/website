@@ -233,6 +233,7 @@ Initial:
 * [ ] Contact page
 * [ ] Fitness Platform (top-level page) — placeholder implemented (#21 open for full showcase content)
 * [ ] Ski Advisor (top-level page) — placeholder implemented (#22 open for full showcase content)
+* [x] Mobile-responsive layout — see #40
 
 ## Project Showcase Pages
 
