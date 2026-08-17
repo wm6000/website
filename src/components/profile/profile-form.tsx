@@ -25,13 +25,18 @@ export function ProfileForm() {
     setJustSaved(true);
   };
 
+  const updateConnections = (connections: UserProfile["connections"]) => {
+    setProfile((p) => ({ ...p, connections }));
+    setJustSaved(false);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <p className="rounded-md border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
         Saved to this browser only, for now — cloud sync is coming later.
       </p>
 
-      <ConnectionsSection />
+      <ConnectionsSection value={profile.connections} onChange={updateConnections} />
       <FitnessSection />
       <SkiSection />
 
