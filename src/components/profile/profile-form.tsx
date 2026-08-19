@@ -30,6 +30,11 @@ export function ProfileForm() {
     setJustSaved(false);
   };
 
+  const updateFitness = (fitness: UserProfile["fitness"]) => {
+    setProfile((p) => ({ ...p, fitness }));
+    setJustSaved(false);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <p className="rounded-md border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
@@ -37,7 +42,7 @@ export function ProfileForm() {
       </p>
 
       <ConnectionsSection value={profile.connections} onChange={updateConnections} />
-      <FitnessSection />
+      <FitnessSection value={profile.fitness} onChange={updateFitness} />
       <SkiSection />
 
       <div className="flex items-center gap-3">

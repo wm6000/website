@@ -217,7 +217,7 @@ Create the portfolio application that connects all projects.
 
 ## Navigation
 
-Top-level nav, left to right: Home, Fitness Platform, Ski Advisor, Projects. Fitness Platform and Ski Advisor are dedicated top-level pages rather than `/projects` subpages — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
+Top-level nav, left to right: Home, Fitness Advisor, Ski Advisor, Projects. Fitness Advisor and Ski Advisor are dedicated top-level pages rather than `/projects` subpages — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
 
 ## Features
 
@@ -231,9 +231,9 @@ Initial:
 * [ ] About page
 * [ ] Projects page — implemented, lists Disaster Response Pipeline and Whale Blog (#19 open for full content)
 * [ ] Contact page
-* [ ] Fitness Platform (top-level page) — placeholder implemented (#21 open for full showcase content)
+* [ ] Fitness Advisor (top-level page) — placeholder implemented (#21 open for full showcase content)
 * [ ] Ski Advisor (top-level page) — placeholder implemented (#22 open for full showcase content)
-* [x] User authentication — Google OAuth (#39); email login (#42) deferred pending data-platform's `core.users` (Phase 3)
+* [x] User authentication — Google OAuth (#39); email login via 6-digit one-time code (#42), sent through Resend and verified against a signed short-lived cookie so it doesn't need data-platform's `core.users` (Phase 3)
 * [x] Mobile-responsive layout — see #40
 
 ## Project Showcase Pages
@@ -252,7 +252,7 @@ Each project page should include:
 * GitHub link
 * Lessons learned
 
-Fitness Platform and Ski Advisor use the same content structure, but live at their own top-level routes (`/fitness-platform`, `/ski-advisor`) instead of under `/projects` — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
+Fitness Advisor and Ski Advisor use the same content structure, but live at their own top-level routes (`/fitness-advisor`, `/ski-advisor`) instead of under `/projects` — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
 
 Data Platform is shared infrastructure (Tier 4 — see `docs/architecture.md`), not a standalone portfolio project, so it does not get a showcase page here — see [ADR 0004](decisions/0004-top-level-fitness-ski-navigation.md).
 
