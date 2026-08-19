@@ -12,7 +12,7 @@ import { AuthButton } from "@/components/auth-button";
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/fitness-platform", label: "Fitness Platform" },
+  { href: "/fitness-advisor", label: "Fitness Advisor" },
   { href: "/ski-advisor", label: "Ski Advisor" },
   { href: "/projects", label: "Projects" },
 ] as const;
