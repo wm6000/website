@@ -16,6 +16,7 @@ const COPY: Record<
   Mode,
   {
     heading: string;
+    googleLabel: string;
     sendCodeLabel: string;
     switchPrompt: string;
     switchHref: string;
@@ -23,15 +24,17 @@ const COPY: Record<
   }
 > = {
   signin: {
-    heading: "Sign in",
-    sendCodeLabel: "Sign in",
+    heading: "Log in",
+    googleLabel: "Sign in with Google",
+    sendCodeLabel: "Log in",
     switchPrompt: "New here?",
     switchHref: "/join",
     switchLabel: "Create an account",
   },
   join: {
-    heading: "Create your account",
-    sendCodeLabel: "Create account",
+    heading: "Sign up",
+    googleLabel: "Sign up with Google",
+    sendCodeLabel: "Sign up",
     switchPrompt: "Already have an account?",
     switchHref: "/login",
     switchLabel: "Log in",
@@ -100,7 +103,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
         variant="outline"
         onClick={() => signIn("google", { callbackUrl: "/profile" })}
       >
-        Continue with Google
+        {copy.googleLabel}
       </Button>
 
       <div className="mt-8 flex items-center gap-3 text-sm text-muted-foreground">
