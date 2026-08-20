@@ -228,9 +228,7 @@ Initial:
 * [x] Tailwind CSS setup
 * [x] shadcn/ui setup
 * [ ] Homepage — placeholder implemented (#17 open for full content)
-* [ ] About page
-* [ ] Projects page — implemented, lists Disaster Response Pipeline and Whale Blog (#19 open for full content)
-* [ ] Contact page
+* [x] Projects page — implemented, lists Disaster Response Pipeline and Whale Blog (#19 open for full content)
 * [ ] Fitness Advisor (top-level page) — placeholder implemented (#21 open for full showcase content)
 * [ ] Ski Advisor (top-level page) — placeholder implemented (#22 open for full showcase content)
 * [x] User authentication — Google OAuth (#39); email login via 6-digit one-time code (#42), sent through Resend and verified against a signed short-lived cookie so it doesn't need data-platform's `core.users` (Phase 3)
