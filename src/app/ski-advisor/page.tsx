@@ -13,21 +13,29 @@ export default async function SkiAdvisorPage() {
       <h1 className="text-3xl font-semibold tracking-tight">Ski Advisor</h1>
 
       {!isLoggedIn && (
-        <div className="mt-4 flex flex-col gap-3 rounded-lg border border-border p-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted-foreground">
-            Check this out — this is a preview with example data. Log in to
-            get started.
+        <>
+          <p className="mt-2 text-muted-foreground">
+            Where should you go skiing this week? Ski Advisor has you covered —
+            check out the daily recommendation for these cities, or log in for
+            custom ones.
           </p>
-          <Button
-            variant="outline"
-            size="sm"
-            className="shrink-0"
-            nativeButton={false}
-            render={<Link href="/login" />}
-          >
-            Log in
-          </Button>
-        </div>
+
+          <div className="mt-4 flex flex-col gap-3 rounded-lg border border-border p-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-muted-foreground">
+              Check this out — this is a preview with example data. Log in to
+              get started.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0"
+              nativeButton={false}
+              render={<Link href="/login" />}
+            >
+              Log in
+            </Button>
+          </div>
+        </>
       )}
 
       <SkiDashboard isLoggedIn={isLoggedIn} />
