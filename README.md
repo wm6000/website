@@ -1,8 +1,30 @@
-# website
+# website — retired
 
-The central portfolio application and user-facing entry point for the willmuehlhausen.com ecosystem — the only client end users interact with directly.
+> **This repo is retired as of 2026-09-20. Nothing here is deployed and nothing here
+> should be built on.**
+>
+> Its two jobs were taken over by two repos that ship:
+>
+> - **[willmuehlhausen](https://github.com/wm6000/willmuehlhausen)** — the portfolio, live
+>   at [willmuehlhausen.com](https://willmuehlhausen.com). Vite, React Router, plain CSS on
+>   design tokens.
+> - **recadvisor** — the RecAdvisor client, against the FastAPI backend in `data-platform`.
+>
+> Neither is a fork of this. Both were written fresh, and the conventions differ — file
+> naming, styling, and the framework itself. **Do not copy patterns from here into
+> either.** This repo's existence is what once sent a spec after the wrong codebase.
+>
+> Kept read-only for its history and its docs (`docs/architecture.md`,
+> `docs/roadmap.md`, `docs/decisions/`), several of which still describe the ecosystem
+> accurately even though this implementation of it does not.
 
-Status: in progress — Phase 2 (Website Foundation) underway. See [`docs/roadmap.md`](docs/roadmap.md).
+## What it was
+
+The Next.js portfolio application, and the first home of the fitness and ski advisor
+dashboards. Never deployed to the live domain.
+
+Status: retired. Formerly "in progress — Phase 2 (Website Foundation)". See
+[`docs/roadmap.md`](docs/roadmap.md).
 
 ## Overview
 
